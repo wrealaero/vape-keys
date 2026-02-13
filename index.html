@@ -105,61 +105,69 @@
             font-weight: 400;
         }
 
-        .alert {
-            background: rgba(168, 85, 247, 0.1);
-            border: 1px solid rgba(168, 85, 247, 0.3);
-            border-radius: 16px;
-            padding: 20px;
+        .step-indicator {
+            display: flex;
+            justify-content: space-between;
             margin-bottom: 32px;
+            padding: 0 20px;
+        }
+
+        .step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        .step::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 50%;
+            width: 100%;
+            height: 2px;
+            background: rgba(138, 43, 226, 0.2);
+            z-index: -1;
+        }
+
+        .step:last-child::after {
+            display: none;
+        }
+
+        .step-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(30, 30, 45, 0.8);
+            border: 2px solid rgba(138, 43, 226, 0.3);
             display: flex;
             align-items: center;
-            gap: 12px;
-        }
-
-        .alert-icon {
-            font-size: 24px;
-            flex-shrink: 0;
-        }
-
-        .alert-text {
+            justify-content: center;
+            margin: 0 auto 8px;
             font-size: 14px;
-            color: rgba(255, 255, 255, 0.9);
-            font-weight: 500;
-        }
-
-        .error-container {
-            background: rgba(239, 68, 68, 0.1);
-            border: 1px solid rgba(239, 68, 68, 0.3);
-            border-radius: 16px;
-            padding: 32px;
-            text-align: center;
-        }
-
-        .error-container h2 {
-            color: #ef4444;
-            font-size: 24px;
-            margin-bottom: 12px;
-        }
-
-        .error-container p {
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 24px;
-            line-height: 1.6;
-        }
-
-        .success-container {
-            background: rgba(34, 197, 94, 0.1);
-            border: 1px solid rgba(34, 197, 94, 0.3);
-            border-radius: 16px;
-            padding: 32px;
-            text-align: center;
-        }
-
-        .success-container h2 {
-            color: #22c55e;
-            font-size: 28px;
-            margin-bottom: 24px;
             font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .step.active .step-circle {
+            background: linear-gradient(135deg, #a855f7, #6366f1);
+            border-color: #a855f7;
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+        }
+
+        .step.completed .step-circle {
+            background: #22c55e;
+            border-color: #22c55e;
+        }
+
+        .step-label {
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.4);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .step.active .step-label {
+            color: #a855f7;
         }
 
         .form-group {
@@ -244,19 +252,35 @@
 
         .btn-success {
             background: linear-gradient(135deg, #22c55e, #16a34a);
-            margin-top: 16px;
         }
 
         .btn-success:hover {
             box-shadow: 0 10px 30px rgba(34, 197, 94, 0.4);
         }
 
-        .btn-error {
-            background: linear-gradient(135deg, #ef4444, #dc2626);
+        .verification-code {
+            background: rgba(168, 85, 247, 0.1);
+            border: 2px solid #a855f7;
+            border-radius: 12px;
+            padding: 24px;
+            margin: 24px 0;
+            text-align: center;
         }
 
-        .btn-error:hover {
-            box-shadow: 0 10px 30px rgba(239, 68, 68, 0.4);
+        .verification-code-label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+        }
+
+        .verification-code-value {
+            font-size: 32px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            color: #a855f7;
+            letter-spacing: 4px;
         }
 
         .key-display {
@@ -357,6 +381,28 @@
             color: #a855f7;
         }
 
+        .alert {
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .alert-icon {
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+
+        .alert-text {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.5;
+        }
+
         @media (max-width: 640px) {
             .container {
                 padding: 32px 24px;
@@ -364,6 +410,10 @@
 
             h1 {
                 font-size: 32px;
+            }
+
+            .verification-code-value {
+                font-size: 24px;
             }
         }
     </style>
@@ -375,147 +425,164 @@
             <h1>Aerov4 Script</h1>
             <p class="subtitle">Free Key System</p>
         </div>
+
+        <div class="step-indicator">
+            <div class="step active" id="step1">
+                <div class="step-circle">1</div>
+                <div class="step-label">Verify</div>
+            </div>
+            <div class="step" id="step2">
+                <div class="step-circle">2</div>
+                <div class="step-label">HWID</div>
+            </div>
+            <div class="step" id="step3">
+                <div class="step-circle">3</div>
+                <div class="step-label">Key</div>
+            </div>
+        </div>
+
         <div id="content">
-            <div class="alert">
-                <span class="alert-icon">⚠️</span>
-                <span class="alert-text">Do NOT refresh this page after generating your key!</span>
-            </div>
-            <div class="form-group">
-                <label for="hwid">Your HWID</label>
-                <input type="text" id="hwid" placeholder="Paste your HWID here...">
-            </div>
-            <button class="btn" id="generateBtn" onclick="generateKey()">Generate Key</button>
-            <div class="info-box">
-                <strong>Instructions:</strong>
-                <ul>
-                    <li>Copy your HWID from the in-game UI</li>
-                    <li>Paste it in the field above</li>
-                    <li>Click "Generate Key"</li>
-                    <li>Copy the generated key back to the script</li>
-                </ul>
-                <strong style="margin-top: 12px; color: #ef4444;">⏱️ Keys expire in 12 hours!</strong>
-            </div>
+            <!-- content should be loaded here on foenum -->
         </div>
     </div>
 
     <script>
         const WORKINK_URL = "https://work.ink/1YyH/aerov4-free-key-system";
+        let currentVerificationCode = null;
 
-        function getVerifyToken() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const token = urlParams.get('verify');
-
-            if (!token) return null;
-            
-            if (token.includes('{') || token.includes('}') || token.includes('SUBID') || token.includes('SUBI')) {
-                console.log('Invalid token detected - bypass attempt');
-                return null;
+        function updateSteps(activeStep) {
+            for (let i = 1; i <= 3; i++) {
+                const step = document.getElementById(`step${i}`);
+                step.classList.remove('active', 'completed');
+                if (i < activeStep) {
+                    step.classList.add('completed');
+                } else if (i === activeStep) {
+                    step.classList.add('active');
+                }
             }
-
-            if (!/^[a-zA-Z0-9]+$/.test(token)) {
-                console.log('Invalid token format');
-                return null;
-            }
-            
-            return token;
         }
 
-        function getStorageKey(token) {
-            return 'key_data_' + token;
+        function generateVerificationCode() {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789'; 
+            let code = '';
+            for (let i = 0; i < 6; i++) {
+                code += chars.charAt(Math.floor(Math.random() * chars.length));
+            }
+            return code;
         }
 
-        function getKeyData(token) {
-            const stored = localStorage.getItem(getStorageKey(token));
+        function saveVerificationCode(code) {
+            const data = {
+                code: code,
+                timestamp: Date.now(),
+                used: false
+            };
+            localStorage.setItem('verification_code', JSON.stringify(data));
+        }
+
+        function getVerificationCode() {
+            const stored = localStorage.getItem('verification_code');
             if (!stored) return null;
             try {
-                return JSON.parse(stored);
+                const data = JSON.parse(stored);
+                if (Date.now() - data.timestamp > 10 * 60 * 1000) {
+                    localStorage.removeItem('verification_code');
+                    return null;
+                }
+                return data;
             } catch {
                 return null;
             }
         }
 
-        function saveKeyData(token, key, timestamp) {
-            const data = {
-                key: key,
-                timestamp: timestamp,
-                used: true
-            };
-            localStorage.setItem(getStorageKey(token), JSON.stringify(data));
+        function markVerificationUsed() {
+            const stored = localStorage.getItem('verification_code');
+            if (stored) {
+                try {
+                    const data = JSON.parse(stored);
+                    data.used = true;
+                    localStorage.setItem('verification_code', JSON.stringify(data));
+                } catch {}
+            }
         }
 
-        function checkWorkinkVerification() {
-            const token = getVerifyToken();
+        function showStep1() {
+            updateSteps(1);
+            const existingCode = getVerificationCode();
             
-            if (!token) {
-                showError(
-                    "Access Denied",
-                    "You need to complete the work.ink verification first. Direct access or bypass attempts are not allowed.",
-                    "Go to work.ink"
-                );
-                return false;
+            if (existingCode && !existingCode.used) {
+                showStep2WithCode(existingCode.code);
+                return;
             }
 
-            const existingData = getKeyData(token);
-            if (existingData && existingData.used) {
-                showExistingKey(existingData.key, existingData.timestamp);
-                return false;
-            }
-
-            return true;
-        }
-
-        function showError(title, message, buttonText) {
             document.getElementById('content').innerHTML = `
-                <div class="error-container">
-                    <h2>🚫 ${title}</h2>
-                    <p>${message}</p>
-                    <a href="${WORKINK_URL}" style="text-decoration: none;">
-                        <button class="btn btn-error">${buttonText}</button>
-                    </a>
+                <div class="alert">
+                    <span class="alert-icon">⚠️</span>
+                    <div class="alert-text">
+                        <strong>Important:</strong> You must complete work.ink to generate a verification code. Do not refresh!
+                    </div>
                 </div>
+                
+                <button class="btn" onclick="startVerification()">
+                    🔗 START VERIFICATION (work.ink)
+                </button>
+
                 <div class="info-box">
-                    <strong>⚠️ Anti-Bypass Protection:</strong>
+                    <strong>How This Works:</strong>
                     <ul>
-                        <li>Direct URL access is blocked</li>
-                        <li>You must complete work.ink to get a verification token</li>
-                        <li>Modifying the URL will not work</li>
-                        <li>One key per work.ink completion</li>
+                        <li>Click the button above to complete work.ink</li>
+                        <li>After completion, you'll get a unique 6-digit code</li>
+                        <li>Use that code to generate your key</li>
+                        <li>Code expires in 10 minutes</li>
                     </ul>
                 </div>
             `;
         }
 
-        function showExistingKey(key, timestamp) {
-            document.getElementById('content').innerHTML = `
-                <div class="success-container">
-                    <h2>✓ Key Already Generated</h2>
-                    <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 20px;">
-                        You already have a key for this verification. Your key is below:
-                    </p>
-                    <div class="key-display" onclick="copyKeyToClipboard('${key}')">
-                        ${key}
-                        <div class="copy-feedback" id="copyFeedback">Copied!</div>
-                    </div>
-                    <button class="btn btn-success" onclick="copyKeyToClipboard('${key}')">📋 Copy Key</button>
-                    <div class="countdown">
-                        <div class="countdown-label">Time Remaining</div>
-                        <div class="countdown-time" id="countdown">--:--:--</div>
-                    </div>
-                </div>
-                <div class="info-box">
-                    <strong>⚠️ Important:</strong>
-                    <ul>
-                        <li>This key only works on the device it was generated for</li>
-                        <li>To get a new key, complete work.ink again</li>
-                        <li>Keys expire 12 hours after generation</li>
-                        <li>Refreshing or modifying the URL won't give you a new key</li>
-                    </ul>
-                </div>
-            `;
-            startCountdown(timestamp);
+        function startVerification() {
+            const code = generateVerificationCode();
+            currentVerificationCode = code;
+            saveVerificationCode(code);
+            showStep2WithCode(code);
+            window.open(WORKINK_URL, '_blank');
         }
 
-        function generateKey() {
+        function showStep2WithCode(code) {
+            updateSteps(2);
+            document.getElementById('content').innerHTML = `
+                <div class="verification-code">
+                    <div class="verification-code-label">Your Verification Code</div>
+                    <div class="verification-code-value">${code}</div>
+                </div>
+
+                <div class="alert">
+                    <span class="alert-icon">📋</span>
+                    <div class="alert-text">
+                        Complete work.ink in the new tab, then return here and paste your HWID below.
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="hwid">Your HWID</label>
+                    <input type="text" id="hwid" placeholder="Paste your HWID here...">
+                </div>
+
+                <button class="btn" onclick="generateKey('${code}')">Generate Key</button>
+
+                <div class="info-box">
+                    <strong>✨ Next Steps:</strong>
+                    <ul>
+                        <li>Complete work.ink task (new tab should be open)</li>
+                        <li>Copy your HWID from the in-game UI</li>
+                        <li>Paste HWID in the field above</li>
+                        <li>Click "Generate Key"</li>
+                    </ul>
+                    <strong style="margin-top: 12px; color: #ef4444;">⏱️ Code expires in 10 minutes!</strong>
+                </div>
+            `;
+        }
+
+        function generateKey(code) {
             const hwid = document.getElementById('hwid').value.trim();
             
             if (!hwid || hwid.length < 10) {
@@ -523,44 +590,31 @@
                 return;
             }
 
-            const btn = document.getElementById('generateBtn');
+            const verification = getVerificationCode();
+            if (!verification || verification.code !== code) {
+                alert('⚠️ Verification code expired or invalid!');
+                showStep1();
+                return;
+            }
+
+            if (verification.used) {
+                alert('⚠️ This verification code was already used!');
+                showStep1();
+                return;
+            }
+
+            updateSteps(3);
+            const btn = event.target;
             btn.disabled = true;
             btn.textContent = 'Generating Key...';
 
             setTimeout(() => {
                 const timestamp = Math.floor(Date.now() / 1000);
                 const hwidHash = generateHwidHash(hwid);
-                const signature = generateSignature(hwidHash, timestamp);
-                const key = `KEY_${hwidHash}_${timestamp}_${signature}`;
-
-                const token = getVerifyToken();
-                saveKeyData(token, key, timestamp);
-
-                document.getElementById('content').innerHTML = `
-                    <div class="success-container">
-                        <h2>✓ Key Generated Successfully!</h2>
-                        <div class="key-display" onclick="copyKeyToClipboard('${key}')">
-                            ${key}
-                            <div class="copy-feedback" id="copyFeedback">Copied!</div>
-                        </div>
-                        <button class="btn btn-success" onclick="copyKeyToClipboard('${key}')">📋 Copy Key</button>
-                        <div class="countdown">
-                            <div class="countdown-label">Expires In</div>
-                            <div class="countdown-time" id="countdown">12:00:00</div>
-                        </div>
-                    </div>
-                    <div class="info-box">
-                        <strong>✨ Next Steps:</strong>
-                        <ul>
-                            <li>Copy the key above (click on it or use the button)</li>
-                            <li>Go back to the game and paste it in the key input</li>
-                            <li>Click submit to load the script</li>
-                        </ul>
-                        <strong style="margin-top: 12px; color: #ef4444;">⚠️ Do NOT refresh this page!</strong>
-                    </div>
-                `;
-
-                startCountdown(timestamp);
+                const signature = generateSignature(hwidHash, timestamp, code);
+                const key = `KEY_${code}_${hwidHash}_${timestamp}_${signature}`;
+                markVerificationUsed();
+                showStep3WithKey(key, timestamp);
             }, 800);
         }
 
@@ -572,14 +626,49 @@
             return hash.substring(0, 10);
         }
 
-        function generateSignature(hwidHash, timestamp) {
+        function generateSignature(hwidHash, timestamp, code) {
             const secret = 'VAPE_SECRET_2025';
-            const combined = hwidHash + timestamp + secret;
+            const combined = code + hwidHash + timestamp + secret;
             let sig = '';
             for (let i = 0; i < combined.length; i++) {
                 sig += (combined.charCodeAt(i) % 16).toString(16);
             }
             return sig.substring(0, 8);
+        }
+
+        function showStep3WithKey(key, timestamp) {
+            document.getElementById('content').innerHTML = `
+                <div style="text-align: center; margin-bottom: 24px;">
+                    <div style="font-size: 48px; margin-bottom: 12px;">✓</div>
+                    <h2 style="color: #22c55e; font-size: 24px; margin-bottom: 8px;">Key Generated!</h2>
+                    <p style="color: rgba(255, 255, 255, 0.6); font-size: 14px;">Copy your key below</p>
+                </div>
+
+                <div class="key-display" onclick="copyKeyToClipboard('${key}')">
+                    ${key}
+                    <div class="copy-feedback" id="copyFeedback">Copied!</div>
+                </div>
+
+                <button class="btn btn-success" onclick="copyKeyToClipboard('${key}')">📋 Copy Key</button>
+
+                <div class="countdown">
+                    <div class="countdown-label">Expires In</div>
+                    <div class="countdown-time" id="countdown">12:00:00</div>
+                </div>
+
+                <div class="info-box">
+                    <strong>✨ Final Steps:</strong>
+                    <ul>
+                        <li>Copy the key above</li>
+                        <li>Go back to the game</li>
+                        <li>Paste the key and submit</li>
+                        <li>Enjoy the free version!</li>
+                    </ul>
+                    <strong style="margin-top: 12px; color: #ef4444;">⚠️ Key expires in 12 hours!</strong>
+                </div>
+            `;
+
+            startCountdown(timestamp);
         }
 
         function copyKeyToClipboard(key) {
@@ -623,7 +712,7 @@
         }
 
         window.onload = () => {
-            checkWorkinkVerification();
+            showStep1();
         };
     </script>
 </body>
