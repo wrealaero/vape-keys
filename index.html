@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AEROV4 Key System</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <title>Aerov4 Key System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,151 +14,151 @@
             box-sizing: border-box;
         }
 
-        :root {
-            --bg-primary: #0a0a0f;
-            --bg-secondary: #141420;
-            --bg-tertiary: #1a1a2e;
-            --purple-primary: #8b5cf6;
-            --purple-secondary: #a78bfa;
-            --purple-dark: #6d28d9;
-            --text-primary: #ffffff;
-            --text-secondary: #a1a1aa;
-            --success: #10b981;
-            --error: #ef4444;
-            --warning: #f59e0b;
-        }
-
         body {
-            font-family: 'Outfit', -apple-system, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
+            font-family: 'Outfit', sans-serif;
+            background: #0a0a0f;
+            color: #ffffff;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
+            padding: 20px;
             position: relative;
-            overflow-x: hidden;
+            overflow: hidden;
         }
 
-        /* Animated background */
         body::before {
             content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(167, 139, 250, 0.1) 0%, transparent 50%),
-                radial-gradient(circle at 40% 20%, rgba(109, 40, 217, 0.08) 0%, transparent 50%);
-            animation: pulse 15s ease-in-out infinite;
-            z-index: 0;
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(circle at 20% 50%, rgba(138, 43, 226, 0.15) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(75, 0, 130, 0.15) 0%, transparent 50%);
+            animation: pulse 8s ease-in-out infinite;
+            pointer-events: none;
         }
 
         @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.7; }
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(5deg); }
+        }
+
+        .noise {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.03;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' /%3E%3C/svg%3E");
+            animation: noise 0.2s steps(10) infinite;
+        }
+
+        @keyframes noise {
+            0% { transform: translate(0, 0); }
+            10% { transform: translate(-5%, -5%); }
+            20% { transform: translate(-10%, 5%); }
+            30% { transform: translate(5%, -10%); }
+            40% { transform: translate(-5%, 15%); }
+            50% { transform: translate(-10%, 5%); }
+            60% { transform: translate(15%, 0); }
+            70% { transform: translate(0, 10%); }
+            80% { transform: translate(-15%, 0); }
+            90% { transform: translate(10%, 5%); }
+            100% { transform: translate(5%, 0); }
         }
 
         .container {
             position: relative;
             z-index: 1;
-            background: var(--bg-secondary);
-            border-radius: 32px;
+            background: rgba(18, 18, 27, 0.85);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
             padding: 48px;
-            max-width: 580px;
+            max-width: 560px;
             width: 100%;
-            margin: 20px;
-            border: 1px solid rgba(139, 92, 246, 0.2);
-            box-shadow: 
-                0 0 60px rgba(139, 92, 246, 0.1),
-                0 20px 80px rgba(0, 0, 0, 0.5);
-            animation: slideUp 0.6s ease-out;
+            border: 1px solid rgba(138, 43, 226, 0.2);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5),
+                        0 0 0 1px rgba(138, 43, 226, 0.1) inset;
         }
 
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .logo {
+        .header {
             text-align: center;
-            margin-bottom: 12px;
-        }
-
-        .logo-icon {
-            width: 64px;
-            height: 64px;
-            background: linear-gradient(135deg, var(--purple-primary), var(--purple-secondary));
-            border-radius: 18px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            font-weight: 900;
-            font-family: 'Space Mono', monospace;
-            margin-bottom: 16px;
-            box-shadow: 0 8px 24px rgba(139, 92, 246, 0.3);
+            margin-bottom: 40px;
         }
 
         h1 {
-            font-size: 32px;
-            font-weight: 900;
-            text-align: center;
-            margin-bottom: 8px;
-            background: linear-gradient(135deg, var(--purple-secondary), #ffffff);
+            font-size: 42px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #a855f7, #6366f1);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+            letter-spacing: -0.5px;
         }
 
         .subtitle {
-            text-align: center;
-            color: var(--text-secondary);
-            margin-bottom: 36px;
+            color: rgba(255, 255, 255, 0.5);
             font-size: 15px;
             font-weight: 400;
         }
 
         .alert {
-            padding: 20px;
+            background: rgba(168, 85, 247, 0.1);
+            border: 1px solid rgba(168, 85, 247, 0.3);
             border-radius: 16px;
-            margin-bottom: 28px;
-            border: 1px solid;
+            padding: 20px;
+            margin-bottom: 32px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .alert-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+
+        .alert-text {
             font-size: 14px;
-            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
             font-weight: 500;
         }
 
-        .alert-warning {
-            background: rgba(245, 158, 11, 0.1);
-            border-color: rgba(245, 158, 11, 0.3);
-            color: #fbbf24;
-        }
-
-        .alert-error {
+        .error-container {
             background: rgba(239, 68, 68, 0.1);
-            border-color: rgba(239, 68, 68, 0.3);
-            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
         }
 
-        .alert-success {
-            background: rgba(16, 185, 129, 0.1);
-            border-color: rgba(16, 185, 129, 0.3);
-            color: #6ee7b7;
+        .error-container h2 {
+            color: #ef4444;
+            font-size: 24px;
+            margin-bottom: 12px;
         }
 
-        .alert h2 {
-            font-size: 18px;
-            margin-bottom: 8px;
+        .error-container p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 24px;
+            line-height: 1.6;
+        }
+
+        .success-container {
+            background: rgba(34, 197, 94, 0.1);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+        }
+
+        .success-container h2 {
+            color: #22c55e;
+            font-size: 28px;
+            margin-bottom: 24px;
             font-weight: 700;
         }
 
@@ -167,263 +169,249 @@
         label {
             display: block;
             margin-bottom: 10px;
+            color: rgba(255, 255, 255, 0.9);
             font-weight: 600;
             font-size: 14px;
-            color: var(--text-primary);
-            letter-spacing: -0.01em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         input {
             width: 100%;
             padding: 16px 20px;
-            background: var(--bg-tertiary);
-            border: 2px solid transparent;
-            border-radius: 14px;
+            background: rgba(30, 30, 45, 0.5);
+            border: 1px solid rgba(138, 43, 226, 0.2);
+            border-radius: 12px;
+            color: #ffffff;
             font-size: 15px;
-            color: var(--text-primary);
-            font-family: 'Space Mono', monospace;
+            font-family: 'JetBrains Mono', monospace;
             transition: all 0.3s ease;
-            outline: none;
-        }
-
-        input::placeholder {
-            color: var(--text-secondary);
-            font-family: 'Outfit', sans-serif;
         }
 
         input:focus {
-            border-color: var(--purple-primary);
-            background: var(--bg-secondary);
-            box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1);
+            outline: none;
+            border-color: #a855f7;
+            background: rgba(30, 30, 45, 0.8);
+            box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.1);
         }
 
-        button {
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .btn {
             width: 100%;
             padding: 18px;
-            background: linear-gradient(135deg, var(--purple-primary), var(--purple-dark));
+            background: linear-gradient(135deg, #a855f7, #6366f1);
             color: white;
             border: none;
-            border-radius: 14px;
+            border-radius: 12px;
             font-size: 16px;
             font-weight: 700;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-family: 'Outfit', sans-serif;
-            letter-spacing: -0.01em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             position: relative;
             overflow: hidden;
         }
 
-        button::before {
+        .btn::before {
             content: '';
             position: absolute;
             top: 0;
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
             transition: left 0.5s ease;
         }
 
-        button:hover::before {
+        .btn:hover::before {
             left: 100%;
         }
 
-        button:hover {
+        .btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 12px 32px rgba(139, 92, 246, 0.4);
+            box-shadow: 0 10px 30px rgba(168, 85, 247, 0.4);
         }
 
-        button:active {
-            transform: translateY(0);
-        }
-
-        button:disabled {
-            background: var(--bg-tertiary);
+        .btn:disabled {
+            background: rgba(100, 100, 120, 0.3);
             cursor: not-allowed;
             transform: none;
         }
 
+        .btn-success {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            margin-top: 16px;
+        }
+
+        .btn-success:hover {
+            box-shadow: 0 10px 30px rgba(34, 197, 94, 0.4);
+        }
+
+        .btn-error {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        .btn-error:hover {
+            box-shadow: 0 10px 30px rgba(239, 68, 68, 0.4);
+        }
+
         .key-display {
-            background: var(--bg-tertiary);
-            border: 2px solid var(--success);
-            border-radius: 16px;
+            background: rgba(30, 30, 45, 0.7);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 12px;
             padding: 20px;
-            margin: 20px 0;
-            font-family: 'Space Mono', monospace;
-            font-size: 13px;
+            margin: 24px 0;
             word-break: break-all;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
-            overflow: hidden;
-        }
-
-        .key-display::before {
-            content: 'Click to copy';
-            position: absolute;
-            top: 8px;
-            right: 12px;
-            font-size: 10px;
-            color: var(--text-secondary);
-            font-family: 'Outfit', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            font-weight: 600;
         }
 
         .key-display:hover {
-            border-color: var(--purple-primary);
-            background: var(--bg-secondary);
-            transform: scale(1.01);
+            background: rgba(30, 30, 45, 0.9);
+            border-color: #22c55e;
         }
 
-        .copy-btn {
-            background: var(--success);
-            margin-top: 12px;
+        .copy-feedback {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(34, 197, 94, 0.95);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
         }
 
-        .copy-btn:hover {
-            box-shadow: 0 12px 32px rgba(16, 185, 129, 0.4);
+        .copy-feedback.show {
+            opacity: 1;
         }
 
         .info-box {
-            background: rgba(139, 92, 246, 0.08);
-            border: 1px solid rgba(139, 92, 246, 0.2);
-            border-radius: 16px;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 12px;
             padding: 20px;
             margin-top: 24px;
             font-size: 13px;
-            line-height: 1.7;
+            line-height: 1.8;
         }
 
         .info-box strong {
-            color: var(--purple-secondary);
+            color: #6366f1;
             display: block;
-            margin-bottom: 12px;
+            margin-bottom: 8px;
             font-size: 14px;
-            font-weight: 700;
         }
 
         .info-box ul {
             list-style: none;
-            padding: 0;
+            padding-left: 0;
         }
 
         .info-box li {
-            padding: 6px 0;
-            color: var(--text-secondary);
-            position: relative;
             padding-left: 24px;
+            position: relative;
+            margin-bottom: 6px;
+            color: rgba(255, 255, 255, 0.7);
         }
 
         .info-box li::before {
             content: '→';
             position: absolute;
             left: 0;
-            color: var(--purple-primary);
-            font-weight: 700;
+            color: #a855f7;
+            font-weight: bold;
         }
 
         .countdown {
             text-align: center;
-            padding: 16px;
-            background: var(--bg-tertiary);
-            border-radius: 12px;
             margin-top: 16px;
-            font-family: 'Space Mono', monospace;
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--purple-secondary);
-            letter-spacing: 0.05em;
+            padding: 12px;
+            background: rgba(168, 85, 247, 0.1);
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
         }
 
         .countdown-label {
-            font-size: 11px;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
             text-transform: uppercase;
-            color: var(--text-secondary);
-            margin-bottom: 8px;
-            font-family: 'Outfit', sans-serif;
-            letter-spacing: 0.1em;
-            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
         }
 
-        .back-link {
-            display: inline-block;
-            margin-top: 16px;
-            color: var(--purple-secondary);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.3s ease;
-        }
-
-        .back-link:hover {
-            color: var(--purple-primary);
-            transform: translateX(-4px);
+        .countdown-time {
+            font-size: 24px;
+            font-weight: 700;
+            color: #a855f7;
         }
 
         @media (max-width: 640px) {
             .container {
                 padding: 32px 24px;
-                margin: 16px;
             }
 
             h1 {
-                font-size: 28px;
-            }
-
-            .logo-icon {
-                width: 56px;
-                height: 56px;
-                font-size: 28px;
+                font-size: 32px;
             }
         }
     </style>
 </head>
 <body>
+    <div class="noise"></div>
     <div class="container">
-        <div class="logo">
-            <div class="logo-icon">V</div>
+        <div class="header">
+            <h1>Aerov4 Script</h1>
+            <p class="subtitle">Free Key System</p>
         </div>
-        <h1>AEROV4 Key System</h1>
-        <p class="subtitle">Generate your 12-hour access key</p>
-        
         <div id="content">
-            <div class="alert alert-warning">
-                <strong>⚠️ Important:</strong> Don't refresh this page after generating your key!
+            <div class="alert">
+                <span class="alert-icon">⚠️</span>
+                <span class="alert-text">Do NOT refresh this page after generating your key!</span>
             </div>
-            
             <div class="form-group">
                 <label for="hwid">Your HWID</label>
-                <input type="text" id="hwid" placeholder="Paste your HWID from the script...">
+                <input type="text" id="hwid" placeholder="Paste your HWID here...">
             </div>
-            
-            <button id="generateBtn" onclick="generateKey()">Generate Key</button>
-            
+            <button class="btn" id="generateBtn" onclick="generateKey()">Generate Key</button>
             <div class="info-box">
-                <strong>📋 How to use:</strong>
+                <strong>Instructions:</strong>
                 <ul>
-                    <li>Copy your HWID from the in-game script</li>
+                    <li>Copy your HWID from the in-game UI</li>
                     <li>Paste it in the field above</li>
                     <li>Click "Generate Key"</li>
                     <li>Copy the generated key back to the script</li>
-                    <li>Your key is valid for 12 hours</li>
                 </ul>
+                <strong style="margin-top: 12px; color: #ef4444;">⏱️ Keys expire in 12 hours!</strong>
             </div>
         </div>
     </div>
 
     <script>
         const WORKINK_URL = "https://work.ink/1YyH/aerov4-free-key-system";
-        
+
         function getVerifyToken() {
             const urlParams = new URLSearchParams(window.location.search);
             return urlParams.get('verify');
         }
-        
-        function getStoredKeyData(token) {
-            const stored = localStorage.getItem('key_data_' + token);
+
+        function getStorageKey(token) {
+            return 'key_data_' + token;
+        }
+
+        function getKeyData(token) {
+            const stored = localStorage.getItem(getStorageKey(token));
             if (!stored) return null;
             try {
                 return JSON.parse(stored);
@@ -431,129 +419,127 @@
                 return null;
             }
         }
-        
-        function storeKeyData(token, key, hwid, timestamp) {
+
+        function saveKeyData(token, key, timestamp) {
             const data = {
                 key: key,
-                hwid: hwid,
                 timestamp: timestamp,
-                generated: Date.now()
+                used: true
             };
-            localStorage.setItem('key_data_' + token, JSON.stringify(data));
+            localStorage.setItem(getStorageKey(token), JSON.stringify(data));
         }
-        
+
         function checkWorkinkVerification() {
             const token = getVerifyToken();
             
             if (!token) {
-                document.getElementById('content').innerHTML = `
-                    <div class="alert alert-error">
-                        <h2>🚫 Access Denied</h2>
-                        <p>You must complete the work.ink verification first.</p>
-                    </div>
-                    <a href="${WORKINK_URL}">
-                        <button>Go to Work.ink</button>
-                    </a>
-                `;
+                showError(
+                    "Access Denied",
+                    "You need to complete the work.ink verification first.",
+                    "Go to work.ink"
+                );
                 return false;
             }
 
-            const existingKey = getStoredKeyData(token);
-            if (existingKey) {
-                showExistingKey(existingKey);
+            const existingData = getKeyData(token);
+            if (existingData && existingData.used) {
+                showExistingKey(existingData.key, existingData.timestamp);
                 return false;
             }
-            
+
             return true;
         }
-        
-        function showExistingKey(keyData) {
-            const expiryTime = keyData.timestamp + (12 * 60 * 60);
-            const now = Math.floor(Date.now() / 1000);
-            
-            if (now >= expiryTime) {
-                document.getElementById('content').innerHTML = `
-                    <div class="alert alert-warning">
-                        <h2>⏰ Key Expired</h2>
-                        <p>Your key has expired. Complete work.ink again to generate a new one.</p>
-                    </div>
-                    <a href="${WORKINK_URL}">
-                        <button>Get New Key</button>
-                    </a>
-                `;
-                return;
-            }
-            
+
+        function showError(title, message, buttonText) {
             document.getElementById('content').innerHTML = `
-                <div class="alert alert-success">
-                    <h2>✅ Your Key is Ready!</h2>
-                    <p>Your key has already been generated. Copy it below:</p>
+                <div class="error-container">
+                    <h2>🚫 ${title}</h2>
+                    <p>${message}</p>
+                    <a href="${WORKINK_URL}" style="text-decoration: none;">
+                        <button class="btn btn-error">${buttonText}</button>
+                    </a>
                 </div>
-                <div class="key-display" onclick="copyKey('${keyData.key}')">${keyData.key}</div>
-                <button class="copy-btn" onclick="copyKey('${keyData.key}')">📋 Copy Key</button>
-                <div class="countdown">
-                    <div class="countdown-label">Time Remaining</div>
-                    <div id="countdown">Loading...</div>
+            `;
+        }
+
+        function showExistingKey(key, timestamp) {
+            document.getElementById('content').innerHTML = `
+                <div class="success-container">
+                    <h2>✓ Key Already Generated</h2>
+                    <p style="color: rgba(255, 255, 255, 0.7); margin-bottom: 20px;">
+                        You already have a key for this verification. Your key is below:
+                    </p>
+                    <div class="key-display" onclick="copyKeyToClipboard('${key}')">
+                        ${key}
+                        <div class="copy-feedback" id="copyFeedback">Copied!</div>
+                    </div>
+                    <button class="btn btn-success" onclick="copyKeyToClipboard('${key}')">📋 Copy Key</button>
+                    <div class="countdown">
+                        <div class="countdown-label">Time Remaining</div>
+                        <div class="countdown-time" id="countdown">--:--:--</div>
+                    </div>
                 </div>
                 <div class="info-box">
-                    <strong>⚠️ Important Notes:</strong>
+                    <strong>⚠️ Important:</strong>
                     <ul>
-                        <li>This key only works on the device with HWID: ${keyData.hwid.substring(0, 16)}...</li>
-                        <li>Key expires in 12 hours from generation</li>
-                        <li>Do not share this key with others</li>
-                        <li>Complete work.ink again after expiration</li>
+                        <li>This key only works on the device it was generated for</li>
+                        <li>To get a new key, complete work.ink again</li>
+                        <li>Keys expire 12 hours after generation</li>
                     </ul>
                 </div>
             `;
-            
-            startCountdown(keyData.timestamp);
+            startCountdown(timestamp);
         }
-        
+
         function generateKey() {
             const hwid = document.getElementById('hwid').value.trim();
             
             if (!hwid || hwid.length < 10) {
-                alert('❌ Please enter a valid HWID (minimum 10 characters)');
+                alert('⚠️ Please paste a valid HWID!');
                 return;
             }
-            
+
             const btn = document.getElementById('generateBtn');
             btn.disabled = true;
-            btn.textContent = 'Generating...';
-            
-            const timestamp = Math.floor(Date.now() / 1000);
-            const hwidHash = generateHwidHash(hwid);
-            const signature = generateSignature(hwidHash, timestamp);
-            const key = `KEY_${hwidHash}_${timestamp}_${signature}`;
-            
-            const token = getVerifyToken();
-            storeKeyData(token, key, hwid, timestamp);
-            
-            document.getElementById('content').innerHTML = `
-                <div class="alert alert-success">
-                    <h2>✅ Key Generated Successfully!</h2>
-                    <p>Copy your key and paste it into the script.</p>
-                </div>
-                <div class="key-display" onclick="copyKey('${key}')">${key}</div>
-                <button class="copy-btn" onclick="copyKey('${key}')">📋 Copy Key</button>
-                <div class="countdown">
-                    <div class="countdown-label">Time Remaining</div>
-                    <div id="countdown">12:00:00</div>
-                </div>
-                <div class="info-box">
-                    <strong>⚠️ Important Notes:</strong>
-                    <ul>
-                        <li>This key only works on YOUR device</li>
-                        <li>Key expires in 12 hours</li>
-                        <li>Don't refresh - your key is saved</li>
-                        <li>If you lose it, return to this URL</li>
-                    </ul>
-                </div>
-            `;
-            
-            startCountdown(timestamp);
+            btn.textContent = 'Generating Key...';
+
+            setTimeout(() => {
+                const timestamp = Math.floor(Date.now() / 1000);
+                const hwidHash = generateHwidHash(hwid);
+                const signature = generateSignature(hwidHash, timestamp);
+                const key = `KEY_${hwidHash}_${timestamp}_${signature}`;
+
+                const token = getVerifyToken();
+                saveKeyData(token, key, timestamp);
+
+                document.getElementById('content').innerHTML = `
+                    <div class="success-container">
+                        <h2>✓ Key Generated Successfully!</h2>
+                        <div class="key-display" onclick="copyKeyToClipboard('${key}')">
+                            ${key}
+                            <div class="copy-feedback" id="copyFeedback">Copied!</div>
+                        </div>
+                        <button class="btn btn-success" onclick="copyKeyToClipboard('${key}')">📋 Copy Key</button>
+                        <div class="countdown">
+                            <div class="countdown-label">Expires In</div>
+                            <div class="countdown-time" id="countdown">12:00:00</div>
+                        </div>
+                    </div>
+                    <div class="info-box">
+                        <strong>✨ Next Steps:</strong>
+                        <ul>
+                            <li>Copy the key above (click on it or use the button)</li>
+                            <li>Go back to the game and paste it in the key input</li>
+                            <li>Click submit to load the script</li>
+                        </ul>
+                        <strong style="margin-top: 12px; color: #ef4444;">⚠️ Do NOT refresh this page!</strong>
+                    </div>
+                `;
+
+                startCountdown(timestamp);
+            }, 800);
         }
-        
+
         function generateHwidHash(hwid) {
             let hash = '';
             for (let i = 0; i < hwid.length; i++) {
@@ -561,7 +547,7 @@
             }
             return hash.substring(0, 10);
         }
-        
+
         function generateSignature(hwidHash, timestamp) {
             const secret = 'VAPE_SECRET_2025';
             const combined = hwidHash + timestamp + secret;
@@ -571,31 +557,25 @@
             }
             return sig.substring(0, 8);
         }
-        
-        function copyKey(key) {
+
+        function copyKeyToClipboard(key) {
             navigator.clipboard.writeText(key).then(() => {
-                const originalText = event.target.textContent;
-                event.target.textContent = '✓ Copied!';
-                event.target.style.background = 'linear-gradient(135deg, #10b981, #059669)';
-                setTimeout(() => {
-                    event.target.textContent = originalText;
-                    event.target.style.background = '';
-                }, 2000);
+                const feedback = document.getElementById('copyFeedback');
+                if (feedback) {
+                    feedback.classList.add('show');
+                    setTimeout(() => {
+                        feedback.classList.remove('show');
+                    }, 2000);
+                }
             }).catch(() => {
-                const textArea = document.createElement('textarea');
-                textArea.value = key;
-                document.body.appendChild(textArea);
-                textArea.select();
-                document.execCommand('copy');
-                document.body.removeChild(textArea);
-                alert('✅ Key copied to clipboard!');
+                alert('Key: ' + key);
             });
         }
-        
+
         function startCountdown(generationTime) {
             const expiryTime = generationTime + (12 * 60 * 60);
             
-            function update() {
+            function updateCountdown() {
                 const now = Math.floor(Date.now() / 1000);
                 const remaining = Math.max(0, expiryTime - now);
                 
@@ -614,10 +594,10 @@
                 }
             }
             
-            update();
-            setInterval(update, 1000);
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
         }
-        
+
         window.onload = () => {
             checkWorkinkVerification();
         };
