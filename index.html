@@ -32,15 +32,9 @@
             position: absolute;
             width: 150%;
             height: 150%;
-            background: radial-gradient(circle at 20% 50%, rgba(138, 43, 226, 0.15) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 80%, rgba(75, 0, 130, 0.15) 0%, transparent 50%);
-            animation: pulse 8s ease-in-out infinite;
+            background: radial-gradient(circle at 20% 50%, rgba(138, 43, 226, 0.08) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(75, 0, 130, 0.08) 0%, transparent 50%);
             pointer-events: none;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1) rotate(0deg); }
-            50% { transform: scale(1.1) rotate(5deg); }
         }
 
         .noise {
@@ -49,24 +43,9 @@
             left: 0;
             width: 100%;
             height: 100%;
-            opacity: 0.03;
+            opacity: 0.015;
             pointer-events: none;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' /%3E%3C/svg%3E");
-            animation: noise 0.2s steps(10) infinite;
-        }
-
-        @keyframes noise {
-            0% { transform: translate(0, 0); }
-            10% { transform: translate(-5%, -5%); }
-            20% { transform: translate(-10%, 5%); }
-            30% { transform: translate(5%, -10%); }
-            40% { transform: translate(-5%, 15%); }
-            50% { transform: translate(-10%, 5%); }
-            60% { transform: translate(15%, 0); }
-            70% { transform: translate(0, 10%); }
-            80% { transform: translate(-15%, 0); }
-            90% { transform: translate(10%, 5%); }
-            100% { transform: translate(5%, 0); }
         }
 
         .container {
@@ -422,8 +401,8 @@
     <div class="noise"></div>
     <div class="container">
         <div class="header">
-            <h1>Aerov4 Script</h1>
-            <p class="subtitle">Free Key System</p>
+            <h1>AeroV4 Script</h1>
+            <p class="subtitle">Free Key Script System</p>
         </div>
 
         <div class="step-indicator">
@@ -442,7 +421,7 @@
         </div>
 
         <div id="content">
-            <!-- content should be loaded here on foenum -->
+            <!-- Content will be dynamically loaded here -->
         </div>
     </div>
 
@@ -519,19 +498,19 @@
                 <div class="alert">
                     <span class="alert-icon">⚠️</span>
                     <div class="alert-text">
-                        <strong>Important:</strong> You must complete work.ink to generate a verification code. Do not refresh!
+                        <strong>Important:</strong> You must complete work.ink to generate a verification code. Do not refresh
                     </div>
                 </div>
                 
                 <button class="btn" onclick="startVerification()">
-                    🔗 START VERIFICATION (work.ink)
+                     START VERIFICATION (work.ink)
                 </button>
 
                 <div class="info-box">
                     <strong>How This Works:</strong>
                     <ul>
                         <li>Click the button above to complete work.ink</li>
-                        <li>After completion, you'll get a unique 6-digit code</li>
+                        <li>After completion, you'll get a unique 6 digit code</li>
                         <li>Use that code to generate your key</li>
                         <li>Code expires in 10 minutes</li>
                     </ul>
@@ -543,7 +522,9 @@
             const code = generateVerificationCode();
             currentVerificationCode = code;
             saveVerificationCode(code);
+
             showStep2WithCode(code);
+
             window.open(WORKINK_URL, '_blank');
         }
 
@@ -570,14 +551,14 @@
                 <button class="btn" onclick="generateKey('${code}')">Generate Key</button>
 
                 <div class="info-box">
-                    <strong>✨ Next Steps:</strong>
+                    <strong> Next Steps:</strong>
                     <ul>
                         <li>Complete work.ink task (new tab should be open)</li>
                         <li>Copy your HWID from the in-game UI</li>
                         <li>Paste HWID in the field above</li>
                         <li>Click "Generate Key"</li>
                     </ul>
-                    <strong style="margin-top: 12px; color: #ef4444;">⏱️ Code expires in 10 minutes!</strong>
+                    <strong style="margin-top: 12px; color: #ef4444;"> Code expires in 10 minutes!</strong>
                 </div>
             `;
         }
@@ -586,19 +567,19 @@
             const hwid = document.getElementById('hwid').value.trim();
             
             if (!hwid || hwid.length < 10) {
-                alert('⚠️ Please paste a valid HWID!');
+                alert('⚠️ Please paste a valid HWID');
                 return;
             }
 
             const verification = getVerificationCode();
             if (!verification || verification.code !== code) {
-                alert('⚠️ Verification code expired or invalid!');
+                alert('⚠️ Verification code expired or invalid');
                 showStep1();
                 return;
             }
 
             if (verification.used) {
-                alert('⚠️ This verification code was already used!');
+                alert('⚠️ This verification code was already used');
                 showStep1();
                 return;
             }
@@ -613,7 +594,9 @@
                 const hwidHash = generateHwidHash(hwid);
                 const signature = generateSignature(hwidHash, timestamp, code);
                 const key = `KEY_${code}_${hwidHash}_${timestamp}_${signature}`;
+
                 markVerificationUsed();
+
                 showStep3WithKey(key, timestamp);
             }, 800);
         }
@@ -649,7 +632,7 @@
                     <div class="copy-feedback" id="copyFeedback">Copied!</div>
                 </div>
 
-                <button class="btn btn-success" onclick="copyKeyToClipboard('${key}')">📋 Copy Key</button>
+                <button class="btn btn-success" onclick="copyKeyToClipboard('${key}')"> Copy Key</button>
 
                 <div class="countdown">
                     <div class="countdown-label">Expires In</div>
@@ -657,7 +640,7 @@
                 </div>
 
                 <div class="info-box">
-                    <strong>✨ Final Steps:</strong>
+                    <strong> Final Steps:</strong>
                     <ul>
                         <li>Copy the key above</li>
                         <li>Go back to the game</li>
