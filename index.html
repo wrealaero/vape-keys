@@ -403,7 +403,21 @@
 
         function getVerifyToken() {
             const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get('verify');
+            const token = urlParams.get('verify');
+
+            if (!token) return null;
+            
+            if (token.includes('{') || token.includes('}') || token.includes('SUBID') || token.includes('SUBI')) {
+                console.log('Invalid token detected - bypass attempt');
+                return null;
+            }
+
+            if (!/^[a-zA-Z0-9]+$/.test(token)) {
+                console.log('Invalid token format');
+                return null;
+            }
+            
+            return token;
         }
 
         function getStorageKey(token) {
@@ -435,7 +449,7 @@
             if (!token) {
                 showError(
                     "Access Denied",
-                    "You need to complete the work.ink verification first.",
+                    "You need to complete the work.ink verification first. Direct access or bypass attempts are not allowed.",
                     "Go to work.ink"
                 );
                 return false;
@@ -458,6 +472,15 @@
                     <a href="${WORKINK_URL}" style="text-decoration: none;">
                         <button class="btn btn-error">${buttonText}</button>
                     </a>
+                </div>
+                <div class="info-box">
+                    <strong>⚠️ Anti-Bypass Protection:</strong>
+                    <ul>
+                        <li>Direct URL access is blocked</li>
+                        <li>You must complete work.ink to get a verification token</li>
+                        <li>Modifying the URL will not work</li>
+                        <li>One key per work.ink completion</li>
+                    </ul>
                 </div>
             `;
         }
@@ -485,6 +508,7 @@
                         <li>This key only works on the device it was generated for</li>
                         <li>To get a new key, complete work.ink again</li>
                         <li>Keys expire 12 hours after generation</li>
+                        <li>Refreshing or modifying the URL won't give you a new key</li>
                     </ul>
                 </div>
             `;
