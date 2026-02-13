@@ -1,1 +1,244 @@
-
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vape Key Generator</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 { color: #333; margin-bottom: 10px; text-align: center; }
+        .subtitle { color: #666; text-align: center; margin-bottom: 30px; font-size: 14px; }
+        .warning {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #856404;
+            text-align: center;
+            font-weight: bold;
+        }
+        .error {
+            background: #f8d7da;
+            border: 2px solid #dc3545;
+            border-radius: 10px;
+            padding: 20px;
+            color: #721c24;
+            text-align: center;
+        }
+        .error h2 { margin-bottom: 10px; }
+        .success {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+        }
+        .success h2 { color: #155724; margin-bottom: 15px; }
+        .key-display {
+            background: #f8f9fa;
+            border: 2px solid #28a745;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            word-break: break-all;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .key-display:hover { background: #e9ecef; }
+        label { display: block; margin-bottom: 8px; color: #333; font-weight: 600; }
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        input:focus { outline: none; border-color: #667eea; }
+        button {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        button:hover { transform: translateY(-2px); }
+        button:disabled { background: #ccc; cursor: not-allowed; }
+        .copy-btn { margin-top: 10px; background: #28a745; }
+        .info {
+            background: #e7f3ff;
+            border-left: 4px solid #2196F3;
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 5px;
+            font-size: 13px;
+        }
+        .countdown { text-align: center; font-size: 12px; color: #666; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1> Vape Key Generator</h1>
+        <p class="subtitle">Get your free script access key</p>
+        <div id="content">
+            <div class="warning"> Do NOT refresh after generating your key!</div>
+            <label for="hwid">Your HWID:</label>
+            <input type="text" id="hwid" placeholder="Paste your HWID here...">
+            <button id="generateBtn" onclick="generateKey()">Generate Key</button>
+            <div class="info">
+                <strong>Instructions:</strong><br>
+                1. Copy HWID from script<br>
+                2. Paste it above<br>
+                3. Click Generate<br>
+                4. Copy key to script<br>
+                <strong>Key expires in 12 hours!</strong>
+            </div>
+        </div>
+    </div>
+    <script>
+        const WORKINK_URL = "https://work.ink/YOUR_LINK_HERE";
+        
+        function getVerifyToken() {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get('verify');
+        }
+        
+        function isTokenUsed(token) {
+            return localStorage.getItem('used_token_' + token) === 'true';
+        }
+        
+        function markTokenUsed(token) {
+            localStorage.setItem('used_token_' + token, 'true');
+        }
+        
+        function checkWorkinkVerification() {
+            const token = getVerifyToken();
+            if (!token) {
+                document.getElementById('content').innerHTML = `
+                    <div class="error">
+                        <h2> fuck no gang u been DENIED</h2>
+                        <p>Complete yo work.ink first</p>
+                        <p style="margin-top: 15px;">
+                            <a href="${WORKINK_URL}"><button>Go to work.ink</button></a>
+                        </p>
+                    </div>`;
+                return false;
+            }
+            if (isTokenUsed(token)) {
+                document.getElementById('content').innerHTML = `
+                    <div class="error">
+                        <h2> Key Already Generated</h2>
+                        <p>Complete work.ink again for a new key.</p>
+                        <p style="margin-top: 15px;">
+                            <a href="${WORKINK_URL}"><button>Back to work.ink</button></a>
+                        </p>
+                    </div>`;
+                return false;
+            }
+            return true;
+        }
+        
+        function generateKey() {
+            const hwid = document.getElementById('hwid').value.trim();
+            if (!hwid || hwid.length < 10) {
+                alert('Please paste a valid HWID!');
+                return;
+            }
+            
+            const btn = document.getElementById('generateBtn');
+            btn.disabled = true;
+            btn.textContent = 'Generating...';
+            
+            const timestamp = Math.floor(Date.now() / 1000);
+            const hwidHash = generateHwidHash(hwid);
+            const signature = generateSignature(hwidHash, timestamp);
+            const key = `KEY_${hwidHash}_${timestamp}_${signature}`;
+            
+            const token = getVerifyToken();
+            markTokenUsed(token);
+            
+            document.getElementById('content').innerHTML = `
+                <div class="success">
+                    <h2> Key Generated!</h2>
+                    <div class="key-display" onclick="copyKey()">${key}</div>
+                    <button class="copy-btn" onclick="copyKey()"> Copy Key</button>
+                    <div class="countdown">Expires in: <span id="countdown">12:00:00</span></div>
+                </div>
+                <div class="info">
+                    <strong> Important:</strong><br>
+                    • Only works on YOUR device<br>
+                    • Expires in 12 hours<br>
+                    • Don't refresh (need to redo work.ink)
+                </div>`;
+            
+            startCountdown(timestamp);
+            localStorage.setItem('current_key', key);
+        }
+        
+        function generateHwidHash(hwid) {
+            let hash = '';
+            for (let i = 0; i < hwid.length; i++) {
+                hash += hwid.charCodeAt(i).toString(16).padStart(2, '0');
+            }
+            return hash.substring(0, 10);
+        }
+        
+        function generateSignature(hwidHash, timestamp) {
+            const secret = 'VAPE_SECRET_2025';
+            const combined = hwidHash + timestamp + secret;
+            let sig = '';
+            for (let i = 0; i < combined.length; i++) {
+                sig += (combined.charCodeAt(i) % 16).toString(16);
+            }
+            return sig.substring(0, 8);
+        }
+        
+        function copyKey() {
+            const key = localStorage.getItem('current_key');
+            navigator.clipboard.writeText(key).then(() => {
+                alert('Key copied to clipboard!');
+            });
+        }
+        
+        function startCountdown(generationTime) {
+            const expiryTime = generationTime + (12 * 60 * 60);
+            setInterval(() => {
+                const now = Math.floor(Date.now() / 1000);
+                const remaining = Math.max(0, expiryTime - now);
+                const hours = Math.floor(remaining / 3600);
+                const minutes = Math.floor((remaining % 3600) / 60);
+                const seconds = remaining % 60;
+                const el = document.getElementById('countdown');
+                if (el) {
+                    el.textContent = `${hours.toString().padStart(2,'0')}:${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+                }
+            }, 1000);
+        }
+        
+        window.onload = () => checkWorkinkVerification();
+    </script>
+</body>
+</html>
