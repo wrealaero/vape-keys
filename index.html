@@ -13,7 +13,6 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: 'Outfit', sans-serif;
             background: #0a0a0f;
@@ -24,7 +23,6 @@
             align-items: center;
             padding: 20px;
         }
-
         .container {
             background: rgba(18, 18, 27, 0.85);
             backdrop-filter: blur(20px);
@@ -34,7 +32,6 @@
             width: 100%;
             border: 1px solid rgba(138, 43, 226, 0.2);
         }
-
         h1 {
             font-size: 28px;
             font-weight: 700;
@@ -45,18 +42,15 @@
             margin-bottom: 8px;
             text-align: center;
         }
-
         .subtitle {
             color: rgba(255, 255, 255, 0.5);
             font-size: 13px;
             text-align: center;
             margin-bottom: 32px;
         }
-
         .form-group {
             margin-bottom: 20px;
         }
-
         label {
             display: block;
             margin-bottom: 8px;
@@ -64,7 +58,6 @@
             font-size: 12px;
             text-transform: lowercase;
         }
-
         input, textarea {
             width: 100%;
             background: rgba(30, 30, 45, 0.6);
@@ -75,16 +68,13 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: 13px;
         }
-
         input:focus, textarea:focus {
             outline: none;
             border-color: #a855f7;
         }
-
         input::placeholder, textarea::placeholder {
             color: rgba(255, 255, 255, 0.3);
         }
-
         .btn {
             width: 100%;
             background: linear-gradient(135deg, #a855f7, #6366f1);
@@ -98,16 +88,13 @@
             transition: opacity 0.2s;
             text-transform: lowercase;
         }
-
         .btn:hover {
             opacity: 0.9;
         }
-
         .btn:disabled {
             opacity: 0.5;
             cursor: not-allowed;
         }
-
         .alert {
             background: rgba(168, 85, 247, 0.1);
             border: 1px solid rgba(168, 85, 247, 0.3);
@@ -118,17 +105,14 @@
             color: rgba(255, 255, 255, 0.8);
             text-transform: lowercase;
         }
-
         .alert.success {
             background: rgba(34, 197, 94, 0.1);
             border-color: rgba(34, 197, 94, 0.3);
         }
-
         .alert.error {
             background: rgba(239, 68, 68, 0.1);
             border-color: rgba(239, 68, 68, 0.3);
         }
-
         .code-display {
             background: rgba(20, 20, 30, 0.8);
             border: 1px solid rgba(138, 43, 226, 0.3);
@@ -142,18 +126,15 @@
             transition: border-color 0.2s;
             position: relative;
         }
-
         .code-display:hover {
             border-color: #a855f7;
         }
-
         .copy-hint {
             font-size: 10px;
             color: rgba(255, 255, 255, 0.4);
             margin-top: 8px;
             text-transform: lowercase;
         }
-
         .step-info {
             background: rgba(30, 30, 45, 0.4);
             border-radius: 8px;
@@ -171,10 +152,8 @@
         <div class="subtitle">free key system</div>
         <div id="content"></div>
     </div>
-
     <script>
         const WORKINK_URL = 'https://work.ink/1YyH/aerov4-free-key-system';
-        const COMPLETION_PAGE_URL = 'https://wrealaero.github.io/workink-key/'; 
         const SESSION_KEY = 'aerov4_session';
         const COMPLETION_KEY = 'aerov4_completion';
 
@@ -265,7 +244,7 @@
 
             if (completion && !completion.used) {
                 const sessionAge = Date.now() - completion.timestamp;
-                if (sessionAge < 30 * 60 * 1000) { 
+                if (sessionAge < 30 * 60 * 1000) {
                     showStep3(completion.session);
                     return;
                 }
@@ -273,10 +252,10 @@
 
             if (session) {
                 const sessionAge = Date.now() - session.timestamp;
-                if (sessionAge < 30 * 60 * 1000) { 
+                if (sessionAge < 30 * 60 * 1000) {
                     if (session.workink_opened) {
                         const workinkAge = Date.now() - session.workink_timestamp;
-                        if (workinkAge < 2 * 60 * 1000) { 
+                        if (workinkAge < 2 * 60 * 1000) {
                             showError('bro u just opened work.ink like a second ago... actually finish it first');
                             return;
                         }
@@ -290,17 +269,13 @@
                 <div class="alert">
                     yo welcome to the free key system. gonna need u to do work.ink real quick to get ur key
                 </div>
-
                 <div class="step-info">
                     1. click the button below<br>
                     2. complete the work.ink thing<br>
                     3. come back here and paste the code they give u<br>
                     4. get ur key and ur done
                 </div>
-
-                <button class="btn" onclick="startWorkink()">
-                    start work.ink
-                </button>
+                <button class="btn" onclick="startWorkink()">start work.ink</button>
             `;
         }
 
@@ -310,10 +285,17 @@
             
             saveSession(sessionCode, timestamp);
             saveCompletion(sessionCode);
-            const completionURL = `${COMPLETION_PAGE_URL}?code=${sessionCode}`;
-            const workinkFullURL = `${WORKINK_URL}?r=${encodeURIComponent(completionURL)}`;
-            window.open(workinkFullURL, '_blank');
+            
+            const pendingCode = {
+                code: sessionCode,
+                timestamp: Date.now()
+            };
+            localStorage.setItem('aerov4_pending_code', JSON.stringify(pendingCode));
+            
+            window.open(WORKINK_URL, '_blank');
+            
             markWorkinkOpened();
+            
             setTimeout(() => {
                 showStep2(sessionCode);
             }, 1000);
@@ -324,24 +306,16 @@
                 <div class="alert">
                     aight cool, now paste the completion code from work.ink below
                 </div>
-
                 <div class="step-info">
                     after u finish work.ink, they should give u a code. paste it here to continue
                 </div>
-
                 <div class="form-group">
                     <label>completion code from work.ink</label>
-                    <input type="text" id="completionInput" placeholder="paste code here..." />
+                    <input type="text" id="completionInput" placeholder="paste code here...">
                 </div>
-
-                <button class="btn" onclick="verifyCompletion('${sessionCode}')">
-                    verify completion
-                </button>
-
+                <button class="btn" onclick="verifyCompletion('${sessionCode}')">verify completion</button>
                 <div style="text-align: center; margin-top: 16px;">
-                    <a href="#" onclick="showStep1(); return false;" style="color: rgba(255,255,255,0.5); font-size: 11px; text-decoration: none;">
-                        start over
-                    </a>
+                    <a href="#" onclick="showStep1(); return false;" style="color: rgba(255,255,255,0.5); font-size: 11px; text-decoration: none;">start over</a>
                 </div>
             `;
         }
@@ -353,20 +327,22 @@
                 showError('u didnt paste anything lol');
                 return;
             }
+
             if (input !== sessionCode) {
                 showError('wrong code bro. make sure u actually did work.ink and copied the right thing');
                 return;
             }
+
             const session = getSession();
             if (session && session.workink_timestamp) {
                 const timeSinceWorkink = Date.now() - session.workink_timestamp;
-                if (timeSinceWorkink < 15000) { 
+                if (timeSinceWorkink < 15000) {
                     showError('nah bro u way too fast. actually complete work.ink first');
                     return;
                 }
             }
+
             markCompletionUsed();
-            
             showStep3(sessionCode);
         }
 
@@ -381,7 +357,6 @@
     end
     return tostring(math.random(100000, 999999)) .. tostring(os.time())
 end
-
 local hwid = getHWID()
 setclipboard(hwid)
 print("hwid copied: " .. hwid)`;
@@ -390,27 +365,21 @@ print("hwid copied: " .. hwid)`;
                 <div class="alert success">
                     nice work! now we just need ur hwid to make the key
                 </div>
-
                 <div class="step-info">
                     1. copy the script below<br>
                     2. paste it in ur executor and run it<br>
                     3. it'll copy ur hwid automatically<br>
                     4. come back here and paste it
                 </div>
-
-                <div class="code-display" onclick="copyToClipboard(\`${hwidScript.replace(/`/g, '\\`')}\`, 'script copied!')">
+                <div class="code-display" onclick="copyToClipboard(\`${hwidScript.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`, 'script copied!')">
 ${hwidScript}
                     <div class="copy-hint">click to copy</div>
                 </div>
-
                 <div class="form-group">
                     <label>paste ur hwid here</label>
-                    <input type="text" id="hwidInput" placeholder="paste hwid..." />
+                    <input type="text" id="hwidInput" placeholder="paste hwid...">
                 </div>
-
-                <button class="btn" onclick="generateKey('${sessionCode}')">
-                    generate key
-                </button>
+                <button class="btn" onclick="generateKey('${sessionCode}')">generate key</button>
             `;
         }
 
@@ -425,7 +394,7 @@ ${hwidScript}
             const timestamp = Math.floor(Date.now() / 1000);
             const hwidHash = generateHwidHash(hwid);
             const signature = generateSignature(hwidHash, timestamp, sessionCode);
-            const key = `KEY_${sessionCode}_${hwidHash}_${timestamp}_${signature}`;
+            const key = 'KEY_' + sessionCode + '_' + hwidHash + '_' + timestamp + '_' + signature;
 
             showStep4(key);
         }
@@ -438,24 +407,16 @@ ${hwidScript}
                 <div class="alert success">
                     yooo ur key is ready! copy it and paste it in the script
                 </div>
-
                 <div class="code-display" onclick="copyToClipboard('${key}', 'key copied!')">
                     ${key}
                     <div class="copy-hint">click to copy</div>
                 </div>
-
-                <button class="btn" onclick="copyToClipboard('${key}', 'key copied!')">
-                    copy key
-                </button>
-
+                <button class="btn" onclick="copyToClipboard('${key}', 'key copied!')">copy key</button>
                 <div class="step-info">
                     this key works for 12 hours. after that u gotta get a new one
                 </div>
-
                 <div style="text-align: center; margin-top: 16px;">
-                    <a href="#" onclick="showStep1(); return false;" style="color: rgba(255,255,255,0.5); font-size: 11px; text-decoration: none;">
-                        get another key
-                    </a>
+                    <a href="#" onclick="showStep1(); return false;" style="color: rgba(255,255,255,0.5); font-size: 11px; text-decoration: none;">get another key</a>
                 </div>
             `;
         }
@@ -476,7 +437,9 @@ ${hwidScript}
 
         function copyToClipboard(text, message) {
             navigator.clipboard.writeText(text).then(() => {
-                showError(message || 'copied!');
+                if (message) {
+                    showError(message);
+                }
             }).catch(() => {
                 prompt('copy this:', text);
             });
