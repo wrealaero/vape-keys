@@ -174,6 +174,7 @@
 
     <script>
         const WORKINK_URL = 'https://work.ink/1YyH/aerov4-free-key-system';
+        const COMPLETION_PAGE_URL = 'https://wrealaero.github.io/workink-key/'; 
         const SESSION_KEY = 'aerov4_session';
         const COMPLETION_KEY = 'aerov4_completion';
 
@@ -272,7 +273,7 @@
 
             if (session) {
                 const sessionAge = Date.now() - session.timestamp;
-                if (sessionAge < 30 * 60 * 1000) {
+                if (sessionAge < 30 * 60 * 1000) { 
                     if (session.workink_opened) {
                         const workinkAge = Date.now() - session.workink_timestamp;
                         if (workinkAge < 2 * 60 * 1000) { 
@@ -308,13 +309,11 @@
             const timestamp = Date.now();
             
             saveSession(sessionCode, timestamp);
-            
             saveCompletion(sessionCode);
-            
-            window.open(WORKINK_URL, '_blank');
-            
+            const completionURL = `${COMPLETION_PAGE_URL}?code=${sessionCode}`;
+            const workinkFullURL = `${WORKINK_URL}?r=${encodeURIComponent(completionURL)}`;
+            window.open(workinkFullURL, '_blank');
             markWorkinkOpened();
-            
             setTimeout(() => {
                 showStep2(sessionCode);
             }, 1000);
@@ -354,12 +353,10 @@
                 showError('u didnt paste anything lol');
                 return;
             }
-
             if (input !== sessionCode) {
                 showError('wrong code bro. make sure u actually did work.ink and copied the right thing');
                 return;
             }
-
             const session = getSession();
             if (session && session.workink_timestamp) {
                 const timeSinceWorkink = Date.now() - session.workink_timestamp;
@@ -368,7 +365,6 @@
                     return;
                 }
             }
-
             markCompletionUsed();
             
             showStep3(sessionCode);
