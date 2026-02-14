@@ -8,141 +8,26 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Outfit', sans-serif;
-            background: #0a0a0f;
-            color: #ffffff;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-        .container {
-            background: rgba(18, 18, 27, 0.85);
-            backdrop-filter: blur(20px);
-            border-radius: 16px;
-            padding: 40px;
-            max-width: 500px;
-            width: 100%;
-            border: 1px solid rgba(138, 43, 226, 0.2);
-        }
-        h1 {
-            font-size: 28px;
-            font-weight: 700;
-            background: linear-gradient(135deg, #a855f7, #6366f1);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 8px;
-            text-align: center;
-        }
-        .subtitle {
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 13px;
-            text-align: center;
-            margin-bottom: 32px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 12px;
-            text-transform: lowercase;
-        }
-        input {
-            width: 100%;
-            background: rgba(30, 30, 45, 0.6);
-            border: 1px solid rgba(138, 43, 226, 0.3);
-            border-radius: 8px;
-            padding: 12px;
-            color: #ffffff;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 13px;
-        }
-        input:focus {
-            outline: none;
-            border-color: #a855f7;
-        }
-        input::placeholder {
-            color: rgba(255, 255, 255, 0.3);
-        }
-        .btn {
-            width: 100%;
-            background: linear-gradient(135deg, #a855f7, #6366f1);
-            border: none;
-            border-radius: 8px;
-            padding: 14px;
-            color: white;
-            font-weight: 700;
-            font-size: 13px;
-            cursor: pointer;
-            transition: opacity 0.2s;
-            text-transform: lowercase;
-        }
-        .btn:hover {
-            opacity: 0.9;
-        }
-        .btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-        .alert {
-            background: rgba(168, 85, 247, 0.1);
-            border: 1px solid rgba(168, 85, 247, 0.3);
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 20px;
-            font-size: 12px;
-            color: rgba(255, 255, 255, 0.8);
-            text-transform: lowercase;
-        }
-        .alert.success {
-            background: rgba(34, 197, 94, 0.1);
-            border-color: rgba(34, 197, 94, 0.3);
-        }
-        .alert.error {
-            background: rgba(239, 68, 68, 0.1);
-            border-color: rgba(239, 68, 68, 0.3);
-        }
-        .code-display {
-            background: rgba(20, 20, 30, 0.8);
-            border: 1px solid rgba(138, 43, 226, 0.3);
-            border-radius: 8px;
-            padding: 16px;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 14px;
-            text-align: center;
-            margin: 20px 0;
-            cursor: pointer;
-            transition: border-color 0.2s;
-        }
-        .code-display:hover {
-            border-color: #a855f7;
-        }
-        .copy-hint {
-            font-size: 10px;
-            color: rgba(255, 255, 255, 0.4);
-            margin-top: 8px;
-            text-transform: lowercase;
-        }
-        .step-info {
-            background: rgba(30, 30, 45, 0.4);
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 20px;
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.6);
-            text-transform: lowercase;
-        }
+        * {margin: 0; padding: 0; box-sizing: border-box;}
+        body {font-family: 'Outfit', sans-serif; background: #0a0a0f; color: #ffffff; min-height: 100vh; display: flex; justify-content: center; align-items: center; padding: 20px;}
+        .container {background: rgba(18, 18, 27, 0.85); backdrop-filter: blur(20px); border-radius: 16px; padding: 40px; max-width: 500px; width: 100%; border: 1px solid rgba(138, 43, 226, 0.2);}
+        h1 {font-size: 28px; font-weight: 700; background: linear-gradient(135deg, #a855f7, #6366f1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 8px; text-align: center;}
+        .subtitle {color: rgba(255, 255, 255, 0.5); font-size: 13px; text-align: center; margin-bottom: 32px;}
+        .form-group {margin-bottom: 20px;}
+        label {display: block; margin-bottom: 8px; color: rgba(255, 255, 255, 0.7); font-size: 12px; text-transform: lowercase;}
+        input {width: 100%; background: rgba(30, 30, 45, 0.6); border: 1px solid rgba(138, 43, 226, 0.3); border-radius: 8px; padding: 12px; color: #ffffff; font-family: 'JetBrains Mono', monospace; font-size: 13px;}
+        input:focus {outline: none; border-color: #a855f7;}
+        input::placeholder {color: rgba(255, 255, 255, 0.3);}
+        .btn {width: 100%; background: linear-gradient(135deg, #a855f7, #6366f1); border: none; border-radius: 8px; padding: 14px; color: white; font-weight: 700; font-size: 13px; cursor: pointer; transition: opacity 0.2s; text-transform: lowercase;}
+        .btn:hover {opacity: 0.9;}
+        .btn:disabled {opacity: 0.5; cursor: not-allowed;}
+        .alert {background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 8px; padding: 12px; margin-bottom: 20px; font-size: 12px; color: rgba(255, 255, 255, 0.8); text-transform: lowercase;}
+        .alert.success {background: rgba(34, 197, 94, 0.1); border-color: rgba(34, 197, 94, 0.3);}
+        .alert.error {background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3);}
+        .code-display {background: rgba(20, 20, 30, 0.8); border: 1px solid rgba(138, 43, 226, 0.3); border-radius: 8px; padding: 16px; font-family: 'JetBrains Mono', monospace; font-size: 14px; text-align: center; margin: 20px 0; cursor: pointer; transition: border-color 0.2s;}
+        .code-display:hover {border-color: #a855f7;}
+        .copy-hint {font-size: 10px; color: rgba(255, 255, 255, 0.4); margin-top: 8px; text-transform: lowercase;}
+        .step-info {background: rgba(30, 30, 45, 0.4); border-radius: 8px; padding: 12px; margin-bottom: 20px; font-size: 11px; color: rgba(255, 255, 255, 0.6); text-transform: lowercase;}
     </style>
 </head>
 <body>
@@ -152,192 +37,53 @@
         <div id="content"></div>
     </div>
     <script>
-        const WORKINK_BASE_URL = 'https://work.ink/1YyH/aerov4-free-key-system';
-        const SESSION_KEY = 'aerov4_session';
-        const VERIFICATION_KEY = 'aerov4_verify';
+        const WORKINK_URL = 'https://work.ink/1YyH/aerov4-free-key-system';
 
-        function generateSessionCode() {
-            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-            let code = '';
-            for (let i = 0; i < 8; i++) {
-                code += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
-            return code;
-        }
-
-        function generateVerificationToken() {
-            const timestamp = Date.now();
-            const random = Math.random().toString(36).substring(2, 15);
-            const secret = 'VAPE_VERIFY_2025';
-            const combined = timestamp + random + secret;
-            
-            let hash = 0;
-            for (let i = 0; i < combined.length; i++) {
-                const char = combined.charCodeAt(i);
-                hash = ((hash << 5) - hash) + char;
-                hash = hash & hash;
-            }
-            
-            return Math.abs(hash).toString(36) + timestamp.toString(36);
-        }
-
-        function saveVerification(token, sessionCode) {
-            const verifyData = {
-                token: token,
-                sessionCode: sessionCode,
-                timestamp: Date.now()
-            };
-            localStorage.setItem(VERIFICATION_KEY, JSON.stringify(verifyData));
-        }
-
-        function getVerification() {
-            const data = localStorage.getItem(VERIFICATION_KEY);
-            if (!data) return null;
-            
-            try {
-                const parsed = JSON.parse(data);
-                const age = Date.now() - parsed.timestamp;
-                if (age < 10 * 60 * 1000) {
-                    return parsed;
-                }
-            } catch {}
-            
-            return null;
-        }
-
-        function saveSession(sessionCode) {
-            const sessionData = {
-                code: sessionCode,
-                timestamp: Date.now(),
-                workink_opened: false
-            };
-            localStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
-        }
-
-        function getSession() {
-            const data = localStorage.getItem(SESSION_KEY);
-            return data ? JSON.parse(data) : null;
-        }
-
-        function markWorkinkOpened() {
-            const session = getSession();
-            if (session) {
-                session.workink_opened = true;
-                session.workink_timestamp = Date.now();
-                localStorage.setItem(SESSION_KEY, JSON.stringify(session));
-            }
-        }
-
-        function generateHwidHash(hwid) {
-            let hash = '';
-            for (let i = 0; i < hwid.length; i++) {
-                hash += hwid.charCodeAt(i).toString(16).padStart(2, '0');
-            }
-            return hash.substring(0, 10);
-        }
-
-        function generateSignature(hwidHash, timestamp, sessionCode) {
-            const secret = 'VAPE_SECRET_2025';
-            const combined = sessionCode + hwidHash + timestamp + secret;
-            let sig = '';
-            for (let i = 0; i < combined.length; i++) {
-                sig += (combined.charCodeAt(i) % 16).toString(16);
-            }
-            return sig.substring(0, 8);
+        function generateCode() {
+            return Array.from({length: 8}, () => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'.charAt(Math.floor(Math.random() * 36))).join('');
         }
 
         function showStep1() {
-            const session = getSession();
-
-            if (session) {
-                const sessionAge = Date.now() - session.timestamp;
-                if (sessionAge < 30 * 60 * 1000) {
-                    if (session.workink_opened) {
-                        showStep2(session.code);
-                        return;
-                    }
-                }
-            }
-
             document.getElementById('content').innerHTML = `
-                <div class="alert">
-                    yo welcome to the free key system. gonna need u to do work.ink real quick to get ur key
-                </div>
-                <div class="step-info">
-                    1. click the button below<br>
-                    2. complete the work.ink thing<br>
-                    3. u'll get redirected automatically<br>
-                    4. copy the code and come back here<br>
-                    5. paste it and get ur key
-                </div>
+                <div class="alert">yo welcome. gonna need u to complete work.ink real quick</div>
+                <div class="step-info">1. click button below<br>2. complete work.ink<br>3. come back and paste the code u get<br>4. profit</div>
                 <button class="btn" onclick="startWorkink()">start work.ink</button>
             `;
         }
 
         function startWorkink() {
-            const sessionCode = generateSessionCode();
-            const verifyToken = generateVerificationToken();
-            
-            saveSession(sessionCode);
-            saveVerification(verifyToken, sessionCode);
-            
-            const workinkURL = WORKINK_BASE_URL + '?verify=' + verifyToken;
-            
-            window.open(workinkURL, '_blank');
-            
-            markWorkinkOpened();
-            
-            setTimeout(() => {
-                showStep2(sessionCode);
-            }, 1000);
+            const code = generateCode();
+            const data = {code: code, timestamp: Date.now(), used: false};
+            localStorage.setItem('aero_verify', JSON.stringify(data));
+            window.open(WORKINK_URL, '_blank');
+            setTimeout(() => showStep2(code), 1000);
         }
 
-        function showStep2(sessionCode) {
+        function showStep2(code) {
             document.getElementById('content').innerHTML = `
-                <div class="alert">
-                    aight cool, now paste the completion code from work.ink below
-                </div>
-                <div class="step-info">
-                    after u finish work.ink, they should give u a code. paste it here to continue
-                </div>
+                <div class="alert">aight cool, paste the code from work.ink below</div>
                 <div class="form-group">
-                    <label>completion code from work.ink</label>
-                    <input type="text" id="completionInput" placeholder="paste code here...">
+                    <label>completion code</label>
+                    <input type="text" id="codeInput" placeholder="paste code here...">
                 </div>
-                <button class="btn" onclick="verifyCompletion('${sessionCode}')">verify completion</button>
-                <div style="text-align: center; margin-top: 16px;">
-                    <a href="#" onclick="showStep1(); return false;" style="color: rgba(255,255,255,0.5); font-size: 11px; text-decoration: none;">start over</a>
-                </div>
+                <button class="btn" onclick="verifyCode('${code}')">verify</button>
+                <div style="text-align: center; margin-top: 16px;"><a href="#" onclick="showStep1(); return false;" style="color: rgba(255,255,255,0.5); font-size: 11px; text-decoration: none;">start over</a></div>
             `;
         }
 
-        function verifyCompletion(sessionCode) {
-            const input = document.getElementById('completionInput').value.trim().toUpperCase();
+        function verifyCode(expected) {
+            const input = document.getElementById('codeInput').value.trim().toUpperCase();
+            if (!input) {showError('bro paste something'); return;}
+            if (input !== expected) {showError('wrong code. make sure u did work.ink and copied it right'); return;}
             
-            if (!input) {
-                showError('u didnt paste anything lol');
-                return;
-            }
-
-            if (input !== sessionCode) {
-                showError('wrong code bro. make sure u actually did work.ink and copied the right thing');
-                return;
-            }
-
-            const session = getSession();
-            if (session && session.workink_timestamp) {
-                const timeSinceWorkink = Date.now() - session.workink_timestamp;
-                if (timeSinceWorkink < 15000) {
-                    showError('nah bro u way too fast. actually complete work.ink first');
-                    return;
-                }
-            }
-
-            showStep3(sessionCode);
+            const data = JSON.parse(localStorage.getItem('aero_verify') || '{}');
+            if (Date.now() - data.timestamp < 15000) {showError('nah too fast bro. actually complete work.ink'); return;}
+            
+            showStep3(expected);
         }
 
-        function showStep3(sessionCode) {
-            const hwidScript = `local function getHWID()
+        function showStep3(code) {
+            const script = `local function getHWID()
     if gethwid then return gethwid() end
     if getexecutorname then
         local name = getexecutorname()
@@ -352,92 +98,70 @@ setclipboard(hwid)
 print("hwid copied: " .. hwid)`;
 
             document.getElementById('content').innerHTML = `
-                <div class="alert success">
-                    nice work! now we just need ur hwid to make the key
-                </div>
-                <div class="step-info">
-                    1. copy the script below<br>
-                    2. paste it in ur executor and run it<br>
-                    3. it'll copy ur hwid automatically<br>
-                    4. come back here and paste it
-                </div>
-                <div class="code-display" onclick="copyToClipboard(\`${hwidScript.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`, 'script copied!')">
-${hwidScript}
+                <div class="alert success">nice! now we need ur hwid</div>
+                <div class="step-info">1. copy script below<br>2. run in executor<br>3. paste hwid here</div>
+                <div class="code-display" onclick="copyText(\`${script.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`, 'copied!')">
+${script}
                     <div class="copy-hint">click to copy</div>
                 </div>
                 <div class="form-group">
-                    <label>paste ur hwid here</label>
+                    <label>paste ur hwid</label>
                     <input type="text" id="hwidInput" placeholder="paste hwid...">
                 </div>
-                <button class="btn" onclick="generateKey('${sessionCode}')">generate key</button>
+                <button class="btn" onclick="makeKey('${code}')">generate key</button>
             `;
         }
 
-        function generateKey(sessionCode) {
+        function makeKey(code) {
             const hwid = document.getElementById('hwidInput').value.trim();
+            if (!hwid || hwid.length < 10) {showError('hwid looks fake bro'); return;}
             
-            if (!hwid || hwid.length < 10) {
-                showError('bro that hwid looks fake. run the script and paste ur actual hwid');
-                return;
+            let hash = '';
+            for (let i = 0; i < hwid.length; i++) {
+                hash += hwid.charCodeAt(i).toString(16).padStart(2, '0');
             }
-
-            const timestamp = Math.floor(Date.now() / 1000);
-            const hwidHash = generateHwidHash(hwid);
-            const signature = generateSignature(hwidHash, timestamp, sessionCode);
-            const key = 'KEY_' + sessionCode + '_' + hwidHash + '_' + timestamp + '_' + signature;
-
+            hash = hash.substring(0, 10);
+            
+            const ts = Math.floor(Date.now() / 1000);
+            const secret = 'VAPE_SECRET_2025';
+            const combined = code + hash + ts + secret;
+            let sig = '';
+            for (let i = 0; i < combined.length; i++) {
+                sig += (combined.charCodeAt(i) % 16).toString(16);
+            }
+            sig = sig.substring(0, 8);
+            
+            const key = 'KEY_' + code + '_' + hash + '_' + ts + '_' + sig;
+            localStorage.removeItem('aero_verify');
             showStep4(key);
         }
 
         function showStep4(key) {
-            localStorage.removeItem(SESSION_KEY);
-            localStorage.removeItem(VERIFICATION_KEY);
-
             document.getElementById('content').innerHTML = `
-                <div class="alert success">
-                    yooo ur key is ready! copy it and paste it in the script
-                </div>
-                <div class="code-display" onclick="copyToClipboard('${key}', 'key copied!')">
+                <div class="alert success">yooo ur key is ready!</div>
+                <div class="code-display" onclick="copyText('${key}', 'key copied!')">
                     ${key}
                     <div class="copy-hint">click to copy</div>
                 </div>
-                <button class="btn" onclick="copyToClipboard('${key}', 'key copied!')">copy key</button>
-                <div class="step-info">
-                    this key works for 12 hours. after that u gotta get a new one
-                </div>
-                <div style="text-align: center; margin-top: 16px;">
-                    <a href="#" onclick="showStep1(); return false;" style="color: rgba(255,255,255,0.5); font-size: 11px; text-decoration: none;">get another key</a>
-                </div>
+                <button class="btn" onclick="copyText('${key}', 'copied!')">copy key</button>
+                <div class="step-info">key works for 12 hours</div>
             `;
         }
 
-        function showError(message) {
-            const content = document.getElementById('content');
-            const errorDiv = document.createElement('div');
-            errorDiv.className = 'alert error';
-            errorDiv.textContent = message;
-            errorDiv.style.marginBottom = '16px';
-            
-            content.insertBefore(errorDiv, content.firstChild);
-            
-            setTimeout(() => {
-                errorDiv.remove();
-            }, 5000);
+        function showError(msg) {
+            const div = document.createElement('div');
+            div.className = 'alert error';
+            div.textContent = msg;
+            div.style.marginBottom = '16px';
+            document.getElementById('content').insertBefore(div, document.getElementById('content').firstChild);
+            setTimeout(() => div.remove(), 5000);
         }
 
-        function copyToClipboard(text, message) {
-            navigator.clipboard.writeText(text).then(() => {
-                if (message) {
-                    showError(message);
-                }
-            }).catch(() => {
-                prompt('copy this:', text);
-            });
+        function copyText(text, msg) {
+            navigator.clipboard.writeText(text).then(() => showError(msg)).catch(() => prompt('copy:', text));
         }
 
-        window.onload = () => {
-            showStep1();
-        };
+        window.onload = () => showStep1();
     </script>
 </body>
 </html>
