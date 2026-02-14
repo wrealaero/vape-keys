@@ -58,7 +58,7 @@
             font-size: 12px;
             text-transform: lowercase;
         }
-        input, textarea {
+        input {
             width: 100%;
             background: rgba(30, 30, 45, 0.6);
             border: 1px solid rgba(138, 43, 226, 0.3);
@@ -68,11 +68,11 @@
             font-family: 'JetBrains Mono', monospace;
             font-size: 13px;
         }
-        input:focus, textarea:focus {
+        input:focus {
             outline: none;
             border-color: #a855f7;
         }
-        input::placeholder, textarea::placeholder {
+        input::placeholder {
             color: rgba(255, 255, 255, 0.3);
         }
         .btn {
@@ -124,7 +124,6 @@
             margin: 20px 0;
             cursor: pointer;
             transition: border-color 0.2s;
-            position: relative;
         }
         .code-display:hover {
             border-color: #a855f7;
@@ -153,9 +152,9 @@
         <div id="content"></div>
     </div>
     <script>
-        const WORKINK_URL = 'https://work.ink/1YyH/aerov4-free-key-system';
+        const WORKINK_BASE_URL = 'https://work.ink/1YyH/aerov4-free-key-system';
         const SESSION_KEY = 'aerov4_session';
-        const COMPLETION_KEY = 'aerov4_completion';
+        const VERIFICATION_KEY = 'aerov4_verify';
 
         function generateSessionCode() {
             const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -166,12 +165,51 @@
             return code;
         }
 
-        function saveSession(sessionCode, timestamp) {
+        function generateVerificationToken() {
+            const timestamp = Date.now();
+            const random = Math.random().toString(36).substring(2, 15);
+            const secret = 'VAPE_VERIFY_2025';
+            const combined = timestamp + random + secret;
+            
+            let hash = 0;
+            for (let i = 0; i < combined.length; i++) {
+                const char = combined.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash;
+            }
+            
+            return Math.abs(hash).toString(36) + timestamp.toString(36);
+        }
+
+        function saveVerification(token, sessionCode) {
+            const verifyData = {
+                token: token,
+                sessionCode: sessionCode,
+                timestamp: Date.now()
+            };
+            localStorage.setItem(VERIFICATION_KEY, JSON.stringify(verifyData));
+        }
+
+        function getVerification() {
+            const data = localStorage.getItem(VERIFICATION_KEY);
+            if (!data) return null;
+            
+            try {
+                const parsed = JSON.parse(data);
+                const age = Date.now() - parsed.timestamp;
+                if (age < 10 * 60 * 1000) {
+                    return parsed;
+                }
+            } catch {}
+            
+            return null;
+        }
+
+        function saveSession(sessionCode) {
             const sessionData = {
                 code: sessionCode,
-                timestamp: timestamp,
-                workink_opened: false,
-                workink_timestamp: null
+                timestamp: Date.now(),
+                workink_opened: false
             };
             localStorage.setItem(SESSION_KEY, JSON.stringify(sessionData));
         }
@@ -188,36 +226,6 @@
                 session.workink_timestamp = Date.now();
                 localStorage.setItem(SESSION_KEY, JSON.stringify(session));
             }
-        }
-
-        function saveCompletion(sessionCode) {
-            const completionData = {
-                session: sessionCode,
-                timestamp: Date.now(),
-                used: false
-            };
-            localStorage.setItem(COMPLETION_KEY, JSON.stringify(completionData));
-        }
-
-        function getCompletion() {
-            const data = localStorage.getItem(COMPLETION_KEY);
-            return data ? JSON.parse(data) : null;
-        }
-
-        function markCompletionUsed() {
-            const completion = getCompletion();
-            if (completion) {
-                completion.used = true;
-                localStorage.setItem(COMPLETION_KEY, JSON.stringify(completion));
-            }
-        }
-
-        function clearSession() {
-            localStorage.removeItem(SESSION_KEY);
-        }
-
-        function clearCompletion() {
-            localStorage.removeItem(COMPLETION_KEY);
         }
 
         function generateHwidHash(hwid) {
@@ -240,25 +248,11 @@
 
         function showStep1() {
             const session = getSession();
-            const completion = getCompletion();
-
-            if (completion && !completion.used) {
-                const sessionAge = Date.now() - completion.timestamp;
-                if (sessionAge < 30 * 60 * 1000) {
-                    showStep3(completion.session);
-                    return;
-                }
-            }
 
             if (session) {
                 const sessionAge = Date.now() - session.timestamp;
                 if (sessionAge < 30 * 60 * 1000) {
                     if (session.workink_opened) {
-                        const workinkAge = Date.now() - session.workink_timestamp;
-                        if (workinkAge < 2 * 60 * 1000) {
-                            showError('bro u just opened work.ink like a second ago... actually finish it first');
-                            return;
-                        }
                         showStep2(session.code);
                         return;
                     }
@@ -272,8 +266,9 @@
                 <div class="step-info">
                     1. click the button below<br>
                     2. complete the work.ink thing<br>
-                    3. come back here and paste the code they give u<br>
-                    4. get ur key and ur done
+                    3. u'll get redirected automatically<br>
+                    4. copy the code and come back here<br>
+                    5. paste it and get ur key
                 </div>
                 <button class="btn" onclick="startWorkink()">start work.ink</button>
             `;
@@ -281,18 +276,14 @@
 
         function startWorkink() {
             const sessionCode = generateSessionCode();
-            const timestamp = Date.now();
+            const verifyToken = generateVerificationToken();
             
-            saveSession(sessionCode, timestamp);
-            saveCompletion(sessionCode);
+            saveSession(sessionCode);
+            saveVerification(verifyToken, sessionCode);
             
-            const pendingCode = {
-                code: sessionCode,
-                timestamp: Date.now()
-            };
-            localStorage.setItem('aerov4_pending_code', JSON.stringify(pendingCode));
+            const workinkURL = WORKINK_BASE_URL + '?verify=' + verifyToken;
             
-            window.open(WORKINK_URL, '_blank');
+            window.open(workinkURL, '_blank');
             
             markWorkinkOpened();
             
@@ -342,7 +333,6 @@
                 }
             }
 
-            markCompletionUsed();
             showStep3(sessionCode);
         }
 
@@ -400,8 +390,8 @@ ${hwidScript}
         }
 
         function showStep4(key) {
-            clearSession();
-            clearCompletion();
+            localStorage.removeItem(SESSION_KEY);
+            localStorage.removeItem(VERIFICATION_KEY);
 
             document.getElementById('content').innerHTML = `
                 <div class="alert success">
