@@ -21,13 +21,18 @@
         .btn {width: 100%; background: linear-gradient(135deg, #a855f7, #6366f1); border: none; border-radius: 8px; padding: 14px; color: white; font-weight: 700; font-size: 13px; cursor: pointer; transition: opacity 0.2s; text-transform: lowercase;}
         .btn:hover {opacity: 0.9;}
         .btn:disabled {opacity: 0.5; cursor: not-allowed;}
+        .btn:active {transform: scale(0.98);}
         .alert {background: rgba(168, 85, 247, 0.1); border: 1px solid rgba(168, 85, 247, 0.3); border-radius: 8px; padding: 12px; margin-bottom: 20px; font-size: 12px; color: rgba(255, 255, 255, 0.8); text-transform: lowercase;}
         .alert.success {background: rgba(34, 197, 94, 0.1); border-color: rgba(34, 197, 94, 0.3);}
         .alert.error {background: rgba(239, 68, 68, 0.1); border-color: rgba(239, 68, 68, 0.3);}
-        .code-display {background: rgba(20, 20, 30, 0.8); border: 1px solid rgba(138, 43, 226, 0.3); border-radius: 8px; padding: 16px; font-family: 'JetBrains Mono', monospace; font-size: 14px; text-align: center; margin: 20px 0; cursor: pointer; transition: border-color 0.2s;}
-        .code-display:hover {border-color: #a855f7;}
-        .copy-hint {font-size: 10px; color: rgba(255, 255, 255, 0.4); margin-top: 8px; text-transform: lowercase;}
+        .code-display {background: rgba(20, 20, 30, 0.8); border: 1px solid rgba(138, 43, 226, 0.3); border-radius: 8px; padding: 16px; font-family: 'JetBrains Mono', monospace; font-size: 11px; text-align: left; margin: 20px 0; cursor: pointer; transition: all 0.2s; white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word; max-height: 300px; overflow-y: auto; user-select: all;}
+        .code-display:hover {border-color: #a855f7; background: rgba(30, 30, 40, 0.9);}
+        .code-display:active {transform: scale(0.99);}
+        .copy-hint {font-size: 10px; color: rgba(255, 255, 255, 0.4); margin-top: 8px; text-transform: lowercase; user-select: none;}
         .step-info {background: rgba(30, 30, 45, 0.4); border-radius: 8px; padding: 12px; margin-bottom: 20px; font-size: 11px; color: rgba(255, 255, 255, 0.6); text-transform: lowercase;}
+        .copy-btn {width: 100%; background: rgba(168, 85, 247, 0.2); border: 1px solid rgba(168, 85, 247, 0.5); border-radius: 8px; padding: 10px; color: white; font-weight: 600; font-size: 12px; cursor: pointer; transition: all 0.2s; text-transform: lowercase; margin-top: 8px;}
+        .copy-btn:hover {background: rgba(168, 85, 247, 0.3);}
+        .copy-btn:active {transform: scale(0.98);}
     </style>
 </head>
 <body>
@@ -99,17 +104,20 @@ print("hwid copied: " .. hwid)`;
 
             document.getElementById('content').innerHTML = `
                 <div class="alert success">nice! now we need ur hwid</div>
-                <div class="step-info">1. copy script below<br>2. run in executor<br>3. paste hwid here</div>
-                <div class="code-display" onclick="copyText(\`${script.replace(/`/g, '\\`').replace(/\$/g, '\\$')}\`, 'copied!')">
-${script}
-                    <div class="copy-hint">click to copy</div>
-                </div>
-                <div class="form-group">
+                <div class="step-info">1. click "copy script" button<br>2. run in executor<br>3. paste hwid here</div>
+                <div class="code-display" id="scriptCode">${script}</div>
+                <button class="copy-btn" onclick="copyScript()">copy script</button>
+                <div class="form-group" style="margin-top: 20px;">
                     <label>paste ur hwid</label>
                     <input type="text" id="hwidInput" placeholder="paste hwid...">
                 </div>
                 <button class="btn" onclick="makeKey('${code}')">generate key</button>
             `;
+        }
+
+        function copyScript() {
+            const scriptText = document.getElementById('scriptCode').textContent.trim();
+            copyText(scriptText, 'script copied!');
         }
 
         function makeKey(code) {
@@ -139,11 +147,8 @@ ${script}
         function showStep4(key) {
             document.getElementById('content').innerHTML = `
                 <div class="alert success">yooo ur key is ready!</div>
-                <div class="code-display" onclick="copyText('${key}', 'key copied!')">
-                    ${key}
-                    <div class="copy-hint">click to copy</div>
-                </div>
-                <button class="btn" onclick="copyText('${key}', 'copied!')">copy key</button>
+                <div class="code-display" style="text-align: center;">${key}</div>
+                <button class="btn" onclick="copyText('${key}', 'key copied!')">copy key</button>
                 <div class="step-info">key works for 12 hours</div>
             `;
         }
@@ -158,7 +163,23 @@ ${script}
         }
 
         function copyText(text, msg) {
-            navigator.clipboard.writeText(text).then(() => showError(msg)).catch(() => prompt('copy:', text));
+            navigator.clipboard.writeText(text).then(() => {
+                showError(msg);
+            }).catch(() => {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.style.position = 'fixed';
+                textarea.style.opacity = '0';
+                document.body.appendChild(textarea);
+                textarea.select();
+                try {
+                    document.execCommand('copy');
+                    showError(msg);
+                } catch (err) {
+                    prompt('copy this:', text);
+                }
+                document.body.removeChild(textarea);
+            });
         }
 
         window.onload = () => showStep1();
