@@ -114,11 +114,10 @@
             if (Date.now() - stored.timestamp < 15000) { showError('nah too fast. actually do the task first bro'); return; }
             if (input !== stored.session) { showError('wrong code. make sure u copied it from the completion page'); return; }
 
-            localStorage.removeItem('aero_session');
-            showStep3();
+            showStep3(stored.session);
         }
 
-        function showStep3() {
+        function showStep3(verifiedSession) {
             const script = `local function getHWID()
     if gethwid then return gethwid() end
     if getexecutorname then
@@ -147,7 +146,7 @@ print("hwid: " .. hwid)`;
                     <label>paste ur hwid here</label>
                     <input type="text" id="hwidInput" placeholder="paste hwid...">
                 </div>
-                <button class="btn" onclick="generateKey()">generate my key</button>
+                <button class="btn" onclick="generateKey('')">generate my key</button>
             `;
         }
 
@@ -156,11 +155,31 @@ print("hwid: " .. hwid)`;
             copyToClipboard(text, 'script copied! now run it in ur executor');
         }
 
-        function generateKey() {
+        function generateKey(verifiedSession) {
             const hwid = document.getElementById('hwidInput').value.trim();
             if (!hwid || hwid.length < 5) { showError('hwid looks empty or invalid bro'); return; }
 
+            const usedKey = 'aero_used_session';
+            try {
+                const used = JSON.parse(localStorage.getItem(usedKey) || '{}');
+                if (verifiedSession && used[verifiedSession]) {
+                    showError('u already generated a key for this session. do lootlabs again to get a new one');
+                    return;
+                }
+            } catch {}
+
             const key = buildKey(hwid);
+
+            try {
+                const used = JSON.parse(localStorage.getItem(usedKey) || '{}');
+                if (verifiedSession) {
+                    used[verifiedSession] = { hwid: hwidToHash(hwid), ts: Date.now() };
+                    localStorage.setItem(usedKey, JSON.stringify(used));
+                }
+            } catch {}
+
+            localStorage.removeItem('aero_session');
+
             showStep4(key, hwid);
         }
 
@@ -199,6 +218,17 @@ print("hwid: " .. hwid)`;
         }
 
         window.onload = () => {
+            try {
+                const usedKey = 'aero_used_session';
+                const used = JSON.parse(localStorage.getItem(usedKey) || '{}');
+                const cutoff = Date.now() - (24 * 60 * 60 * 1000);
+                let changed = false;
+                for (const k in used) {
+                    if (used[k].ts && used[k].ts < cutoff) { delete used[k]; changed = true; }
+                }
+                if (changed) localStorage.setItem(usedKey, JSON.stringify(used));
+            } catch {}
+
             const stored = localStorage.getItem('aero_session');
             if (stored) {
                 try {
